@@ -3,8 +3,7 @@ package pl.edu.mimuw;
 public class Main {
 
   public static void main(String[] args) {
-    final var template = new TemplateClass();
-    final var greeting = template.getGreeting();
-    System.out.println(greeting);
+    final var number = new BigInt("42");
+    System.out.println(number);
   }
 }
