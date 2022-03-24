@@ -30,12 +30,24 @@ class BigIntTest {
 
   @Test
   void testSmallTimes() {
-    throw new IllegalStateException("TODO task 5: write test for multiplication of small numbers");
+    final var x = new BigInt("45");
+    final var y = new BigInt("-19");
+    final var expectedResult = "-855";
+
+    final var result = x.times(y).toString();
+
+    assertEquals(expectedResult, result);
   }
 
   @Test
   void testBigTimes() {
-    throw new IllegalStateException("TODO task 6: write test for multiplication of big numbers");
+    final var x = new BigInt("58937589237582356237853629847328956732489237534982658925687242586325028357230957235890325723852");
+    final var y = new BigInt("98573984723646366363663463453485237953498573984385257092345798042752857249857253252358237582");
+    final var expectedResult = "5809713021153987676483114449890793999581914862036170922471262096320535256086937377845554214156208895499803136701250190519179308087899330996009447803284249218272913580990134871209140205864";
+
+    final var result = x.times(y).toString();
+
+    assertEquals(expectedResult, result);
   }
 
   @Test
