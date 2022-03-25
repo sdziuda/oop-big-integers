@@ -1,6 +1,7 @@
 package pl.edu.mimuw;
 
 import java.util.Arrays;
+
 import static java.lang.Math.*;
 
 public final class BigInt {
@@ -12,7 +13,7 @@ public final class BigInt {
   public BigInt(String number) {
     int signLength = 0;
 
-    if(number.charAt(signLength) == '-') {
+    if (number.charAt(signLength) == '-') {
       this.isPositive = false;
       signLength++;
     } else {
@@ -24,7 +25,7 @@ public final class BigInt {
       digits[i] = (number.charAt(i + signLength) - '0');
     }
 
-    this.digits = digits;
+    this.digits = deleteZeros(digits);
   }
 
   public BigInt(int[] digits, boolean isPositive) {
@@ -41,10 +42,15 @@ public final class BigInt {
     return new BigInt(digits, !this.isPositive);
   }
 
+  /* A method to add two numbers of  the same sign.
+  This method will return a table of digits of the
+  result of adding the object we are calling it on
+  and the parameter. */
   private int[] addSameSign(BigInt other) {
     final var result = new int[max(this.digits.length, other.digits.length) + 1];
 
-    for (int i = 1; i < result.length ; i++) {
+    // Standard algorithm for addition of two big numbers.
+    for (int i = 1; i < result.length; i++) {
       if (this.digits.length - i >= 0) {
         result[result.length - i] += this.digits[this.digits.length - i];
       }
@@ -62,6 +68,11 @@ public final class BigInt {
     return result;
   }
 
+  /* A method to determine which of two numbers has
+  greater (worth notable: not equal) value.
+  This method will return true if the object we are
+  calling it on has greater absolute value than the
+  parameter. */
   private boolean greaterAbs(BigInt other) {
     if (this.digits.length > other.digits.length) {
       return true;
@@ -77,10 +88,14 @@ public final class BigInt {
     }
   }
 
+  /* A method to add two numbers with different sign,
+  the parameter of this function should be the one
+  number that has a smaller absolute value. */
   private int[] addDiffSign(BigInt smaller) {
     final var result = new int[max(this.digits.length, smaller.digits.length) + 1];
 
-    for (int i = 1; i < result.length ; i++) {
+    // Standard algorithm for subtraction of two big numbers.
+    for (int i = 1; i < result.length; i++) {
       if (this.digits.length - i >= 0) {
         result[result.length - i] += this.digits[this.digits.length - i];
       }
@@ -101,9 +116,12 @@ public final class BigInt {
     return result;
   }
 
-  private static int [] deleteZeros(int[] digits) {
+  /* A method to return a new table with the same content as
+  digits[] but without leading zeros. */
+  private static int[] deleteZeros(int[] digits) {
     int count = 0;
 
+    // First we have to count how many leading zeros are there.
     if (digits.length > 1) {
       int it = 0;
       while (digits[it] == 0) {
@@ -112,6 +130,7 @@ public final class BigInt {
       }
     }
 
+    // Now we have to create a new table and copy content from digits[].
     var result = new int[digits.length - count];
     System.arraycopy(digits, count, result, 0, result.length);
 
@@ -122,6 +141,9 @@ public final class BigInt {
     var tempDigits = new int[max(this.digits.length, other.digits.length) + 1];
     boolean isPositive = true;
 
+    /* We have to differentiate the cases in which,
+    the two numbers are of the same or different sign
+    (or when they are equal, for convenience). */
     if (this.isPositive == other.isPositive) {
       tempDigits = this.addSameSign(other);
       isPositive = this.isPositive;
@@ -132,9 +154,10 @@ public final class BigInt {
       tempDigits = other.addDiffSign(this);
       isPositive = other.isPositive;
     } else {
-      tempDigits = new int[] {0};
+      tempDigits = new int[]{0};
     }
 
+    // Last thing to do is delete the leading zeros.
     var result = deleteZeros(tempDigits);
 
     return new BigInt(result, isPositive);
@@ -144,12 +167,15 @@ public final class BigInt {
     final var tempDigits = new int[this.digits.length + other.digits.length + 1];
     final boolean isPositive = this.isPositive == other.isPositive;
 
+    // First we have to multiply digits of two numbers one by one.
     for (int i = this.digits.length - 1; i >= 0; i--) {
       for (int j = other.digits.length - 1; j >= 0; j--) {
         tempDigits[i + j + 2] += this.digits[i] * other.digits[j];
       }
     }
 
+    /* Now we have to "fix" the table, so that each place holds
+    only one digit. */
     for (int i = tempDigits.length - 1; i >= 1; i--) {
       if (tempDigits[i] >= 10) {
         tempDigits[i - 1] += tempDigits[i] / 10;
@@ -157,6 +183,7 @@ public final class BigInt {
       }
     }
 
+    // Last thing to do is delete the leading zeros.
     var result = deleteZeros(tempDigits);
 
     return new BigInt(result, isPositive);
@@ -166,10 +193,12 @@ public final class BigInt {
   public String toString() {
     final var result = new StringBuilder();
 
+    // First we have to check the sign.
     if (!this.isPositive) {
       result.append("-");
     }
 
+    // All we have to do now is convert from digits to chars.
     for (int digit : this.digits) {
       result.append((char) (digit + '0'));
     }
