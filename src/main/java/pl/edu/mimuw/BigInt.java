@@ -42,10 +42,12 @@ public final class BigInt {
     return new BigInt(digits, !this.isPositive);
   }
 
-  /* A method to add two numbers of  the same sign.
-  This method will return a table of digits of the
-  result of adding the object we are calling it on
-  and the parameter. */
+  /**
+   * A method to add two numbers of  the same sign.
+   * This method will return a table of digits of the
+   * result of adding the object we are calling it on
+   * and the parameter.
+   */
   private int[] addSameSign(BigInt other) {
     final var result = new int[max(this.digits.length, other.digits.length) + 1];
 
@@ -68,11 +70,13 @@ public final class BigInt {
     return result;
   }
 
-  /* A method to determine which of two numbers has
-  greater (worth notable: not equal) value.
-  This method will return true if the object we are
-  calling it on has greater absolute value than the
-  parameter. */
+  /**
+   * A method to determine which of two numbers has
+   * greater (worth notable: not equal) value.
+   * This method will return true if the object we are
+   * calling it on has greater absolute value than the
+   * parameter.
+   */
   private boolean greaterAbs(BigInt other) {
     if (this.digits.length > other.digits.length) {
       return true;
@@ -88,9 +92,11 @@ public final class BigInt {
     }
   }
 
-  /* A method to add two numbers with different sign,
-  the parameter of this function should be the one
-  number that has a smaller absolute value. */
+  /**
+   * A method to add two numbers with different sign,
+   * the parameter of this function should be the one
+   * number that has a smaller absolute value.
+   */
   private int[] addDiffSign(BigInt smaller) {
     final var result = new int[max(this.digits.length, smaller.digits.length) + 1];
 
@@ -116,7 +122,8 @@ public final class BigInt {
     return result;
   }
 
-  /* A method to return a new table with the same content as
+  /**
+   *  A method to return a new table with the same content as
   digits[] but without leading zeros. */
   private static int[] deleteZeros(int[] digits) {
     int count = 0;
